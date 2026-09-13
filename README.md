@@ -1,6 +1,188 @@
-# Drone-Assisted Fire Lane Occupancy Detection Web App
+# Drone-Assisted Fire Lane Occupancy Detection System
 
-这是一个本地运行的无人机巡检消防通道占用检测网页。它把训练好的 YOLO 模型接入 Flask 应用，支持上传图片和视频，在浏览器中查看检测结果，并为视频检测生成 HTML 报告。
+> A computer vision prototype that turns drone inspection footage into visual evidence for reviewing potential obstructions in emergency access routes.
+
+<!-- Replace the placeholders below with real project materials before making this repository public. -->
+
+**Project by:** `[Student name]`  
+**School:** `[School name]`  
+**Project year:** `[Year]`
+
+[Watch the 2-3 minute demo](#project-demo) · [Try the prototype](#try-the-prototype) · [Read the workflow](#how-it-works)
+
+> **Project preview to add:** a real image showing a drone inspection frame next to its annotated detection result.
+
+## The Problem
+
+Fire lanes are essential for emergency response, but they can be blocked by vehicles or other objects. Manual inspection is time-consuming and difficult to scale. Fixed cameras may also provide limited coverage or inflexible viewpoints.
+
+This project explores a practical first-pass inspection workflow using drone footage and computer vision. The goal is not to replace human review, but to help turn long inspection videos into easier-to-review evidence.
+
+## What I Built
+
+I built a local web application that connects four parts of the workflow:
+
+1. **Capture:** collect inspection footage with a drone.
+2. **Detect:** run a YOLO-based object detection model on images or video frames.
+3. **Review:** display annotated results and detection logs in a browser.
+4. **Report:** save key frames and detection information into an HTML report.
+
+```text
+Drone inspection footage
+          ↓
+   Upload to web app
+          ↓
+    YOLO detection
+          ↓
+ Annotated result display
+          ↓
+    Inspection report
+```
+
+## Project Demo
+
+<!-- Replace this placeholder with an embedded video or a public video link. Keep the final video under 3 minutes. -->
+
+**Demo video:** `[Add English demo video URL]`
+
+The final demo should show:
+
+- the original drone inspection footage;
+- the video being uploaded to the application;
+- the detection result appearing in the shared display area;
+- the detection log updating during processing;
+- the generated inspection report.
+
+## Prototype Results
+
+The prototype accepts images and videos and returns visual detection results with bounding boxes, class labels, and confidence scores. For video input, it reads frames sequentially, runs detection, and streams annotated frames to the browser. After processing, it generates an HTML report containing key frames and detection information.
+
+| Raw drone footage | Annotated detection | Inspection report |
+| --- | --- | --- |
+| `[Add image]` | `[Add image]` | `[Add screenshot]` |
+
+**Verified result:** `[Add one measured result, such as a test-set metric or a clearly defined prototype observation.]`
+
+Only add numerical claims that have been measured and can be explained.
+
+## How It Works
+
+### 1. Upload
+
+The user uploads an image or an inspection video through the browser. The Flask backend receives the file and stores it locally.
+
+### 2. Inference
+
+The backend loads the trained `best.pt` model and calls YOLO inference. Image detection processes one image directly. Video detection uses OpenCV to read the video frame by frame.
+
+### 3. Display
+
+The application draws bounding boxes on the model output and displays the result in one shared viewing area. The page also shows detection logs and current result information.
+
+### 4. Reporting
+
+During video processing, the application records selected key frames, timestamps, and detection information. When processing finishes, it creates an HTML report in `outputs/reports/`.
+
+## My Contribution
+
+Replace this section with the student's actual work. Keep the claims specific and truthful.
+
+- `[Add]` Organized or collected the project data.
+- `[Add]` Trained and tested the YOLO model.
+- `[Add]` Built the image and video inference workflow.
+- `[Add]` Connected the model to the Flask web application.
+- `[Add]` Designed the detection result display and report generation process.
+- `[Add]` Participated in planning or collecting drone-based inspection footage.
+
+## Limitations and Next Steps
+
+The current prototype performs best on scenes similar to its training data. Changes in lighting, flight altitude, camera angle, distance, background, and object appearance can affect detection quality. The current system is intended to support human review rather than make final enforcement decisions.
+
+Next steps include:
+
+- collecting more diverse drone inspection footage;
+- improving the model's generalization to new locations and viewpoints;
+- adding object tracking to reduce repeated counting in videos;
+- exploring live drone video input;
+- improving report summaries and alert functions.
+
+## Technology
+
+- **YOLO:** object detection
+- **OpenCV:** video frame reading and image processing
+- **Flask:** Python backend and web routes
+- **HTML, CSS, JavaScript:** browser interface and interaction
+- **CUDA GPU inference:** model prediction is fixed to `device=0` in this prototype
+
+## Try the Prototype
+
+This repository contains the functional local detection application. It is separate from a public project showcase page.
+
+When the application is running, open:
+
+```text
+http://127.0.0.1:7860
+```
+
+If a public deployment becomes available, add it here:
+
+**Live prototype:** `[Add public prototype URL]`
+
+## Run Locally
+
+### Requirements
+
+- Windows
+- Python 3.10 or newer
+- An NVIDIA GPU with a working CUDA driver
+- A CUDA-enabled PyTorch installation
+
+The application checks CUDA at startup and refuses to fall back to CPU inference.
+
+### Install dependencies
+
+Use the Conda environment that contains the CUDA-enabled PyTorch installation:
+
+```powershell
+cd E:\drone-fire-lane-detection-web
+conda activate yolo
+python -m pip install -r requirements.txt
+```
+
+### Start the application
+
+```powershell
+cd E:\drone-fire-lane-detection-web
+python run_server.py
+```
+
+Or use the included GPU launcher:
+
+```powershell
+cd E:\drone-fire-lane-detection-web
+.\start_gpu.ps1
+```
+
+Then open `http://127.0.0.1:7860` in a browser.
+
+## Repository Structure
+
+```text
+.
+├── app.py                 # Flask backend, inference, and report generation
+├── run_server.py          # Local launcher without the debugger
+├── start_gpu.ps1          # Starts the app in the yolo Conda environment
+├── requirements.txt       # Python dependencies
+├── templates/index.html   # Web page structure
+├── static/app.js          # Browser interaction and upload requests
+├── static/style.css       # Web page styling
+├── weights/best.pt        # Trained YOLO weights
+└── outputs/               # Uploaded files, result images, and reports
+```
+
+## Project Boundary
+
+This is a local research and application prototype. A real deployment would require broader data collection, stricter evaluation, secure file handling, authentication, HTTPS, resource limits, and human review procedures.
 
 ## 项目功能
 
