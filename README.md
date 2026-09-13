@@ -2,11 +2,8 @@
 
 > A computer vision project that uses drone inspection footage to identify potential obstructions in emergency access routes and turn them into reviewable visual evidence.
 
-**Project by:** `[Student name]`  
-**School:** `[School name]`  
-**Project year:** `[Year]`
-
-> **About this page:** This README is a project showcase, not a software installation guide. Replace every bracketed placeholder with real project information or media before sharing this repository.
+**Project by:** Xing'er Li  
+**Project year:** 2026
 
 ---
 
@@ -14,17 +11,17 @@
 
 Fire lanes are essential for emergency response, but they can be blocked by vehicles or other objects. Manual inspection is time-consuming, especially when inspectors need to review long videos or cover a large area. Fixed cameras may also provide limited coverage or inflexible viewpoints.
 
-This project explores whether drone footage and computer vision can support a faster first-pass inspection workflow while keeping a human reviewer in the loop.
+This project explores a practical first-pass inspection workflow that combines drone footage with computer vision while keeping a human reviewer in the loop.
 
-### Why use a drone?
+### Why Use a Drone?
 
-An aerial platform can capture wider areas and more flexible viewpoints than a single fixed camera. In this project, the drone is the data-collection layer: it records inspection footage that can later be analyzed by the detection model.
+A drone can capture wider areas and more flexible viewpoints than a single fixed camera. In this project, the drone is the data-collection layer: it records inspection footage that can later be analyzed by the detection model.
 
 ---
 
 ## The Project
 
-I built a prototype that connects four steps into one inspection workflow:
+The prototype connects four steps into one inspection workflow:
 
 1. **Capture:** collect fire-lane footage with a drone.
 2. **Detect:** analyze images or video frames with a YOLO-based object detection model.
@@ -45,80 +42,39 @@ Drone inspection footage
 
 ## Project Showcase
 
-### 1. Drone Inspection Input
+### Drone Inspection Input
 
-**[PLACE PHOTO HERE: Original drone inspection footage]**
+![Original drone inspection footage](assets/drone-inspection-input.jpg)
 
-Add one clear still image from the original drone video. It should show the inspection viewpoint and make it obvious that the footage was collected from an aerial or elevated perspective.
+*Original footage collected during a fire-lane inspection.*
 
-**Suggested caption:**  
-`Original aerial footage collected during a fire-lane inspection.`
+### Detection Output
 
-**Optional second image:**  
-`A wider view showing the area covered by the drone.`
+![Annotated fire lane detection result](assets/detection-output.jpg)
 
-### 2. Detection Output
+*The detection model highlights objects identified in the inspection frame.*
 
-**[PLACE PHOTO HERE: Annotated detection result]**
+### Web Application
 
-Add a frame from the same scene after model inference. The bounding boxes and labels should be large enough to read in a GitHub preview.
+![Fire lane detection web interface](assets/web-interface.png)
 
-**Suggested caption:**  
-`The detection model highlights objects identified in the inspection frame.`
+*A web interface for uploading inspection media and reviewing detection results.*
 
-### 3. Web Application
+### Generated Report
 
-**[PLACE SCREENSHOT HERE: Detection web interface]**
+![Generated fire lane inspection report](assets/inspection-report.png)
 
-Add a screenshot of the working web application. The screenshot should show the shared detection display area and, if possible, the uploaded video or annotated result on screen.
-
-**Suggested caption:**  
-`A web interface for uploading inspection media and reviewing detection results.`
-
-### 4. Generated Report
-
-**[PLACE SCREENSHOT HERE: Generated HTML inspection report]**
-
-Add a screenshot of the generated report showing key frames, timestamps, or detection summaries.
-
-**Suggested caption:**  
-`Key frames and detection information organized into an inspection report.`
+*Key frames and detection information are organized into an inspection report.*
 
 ---
 
 ## Project Demo Video
 
-**[PLACE VIDEO LINK HERE: English demo video, approximately 2 minutes and no longer than 3 minutes]**
+[Add the final 2-3 minute English demo video link here]
 
-The video should be short and visual. It should not be a full lecture or a slide-by-slide reading. Show the product working from input to output.
+The video shows the complete workflow:
 
-### Recommended video sequence
-
-**0:00-0:15 — The problem**  
-Show the fire-lane context or an original drone frame. Briefly explain why manual inspection is difficult.
-
-**0:15-0:35 — The idea**  
-Show the project title and the workflow: drone footage → detection model → web review → report.
-
-**0:35-1:20 — The prototype**  
-Show the web application, upload an inspection video, start detection, and show annotated frames appearing in the shared display area.
-
-**1:20-1:45 — The output**  
-Show the detection logs and open the generated HTML report with key frames and timestamps.
-
-**1:45-2:10 — Results and limitations**  
-Show one or two representative results, then explain that performance can change with lighting, altitude, viewpoint, and background.
-
-**2:10-2:25 — Closing**  
-State what the prototype demonstrates and what you plan to improve next.
-
-### Suggested video opening
-
-> Fire lanes are critical for emergency response, but they can be blocked by vehicles or other objects. I built a drone-assisted computer vision system to help turn inspection footage into reviewable detection evidence.
-
-### Suggested video closing
-
-> This prototype connects drone inspection, computer vision, and web-based reporting in one workflow. My next step is to collect more diverse drone footage and improve its performance in unfamiliar environments.
+**Problem → Drone inspection → Detection → Web review → Generated report**
 
 ---
 
@@ -126,51 +82,44 @@ State what the prototype demonstrates and what you plan to improve next.
 
 ### Capture
 
-The drone records inspection footage from an elevated and flexible viewpoint. The footage serves as the input to the rest of the system.
+The drone records inspection footage from an elevated and flexible viewpoint. This footage becomes the input to the detection workflow.
 
 ### Detect
 
-The trained YOLO model analyzes an image or processes a video frame by frame. It returns detected objects, locations, class labels, and confidence scores.
+The trained YOLO model analyzes an image or processes a video frame by frame. It identifies relevant objects and returns bounding boxes, class labels, and confidence scores.
 
 ### Review
 
-The web application displays the annotated image or video and provides detection logs. Images and videos are presented through a shared result area so the user can review both types of input in one place.
+The web application displays the annotated image or video together with detection information. Images and videos share the same result area, making the workflow easier to follow.
 
 ### Report
 
-After video processing, the system organizes selected key frames and detection information into an HTML inspection report. The report makes the results easier to save, review, and discuss.
+After video processing, the system organizes selected key frames and detection information into an HTML report. The report makes the results easier to save, review, and discuss.
 
 ---
 
 ## Results
 
-The prototype demonstrates that drone footage can be connected to a YOLO detection workflow and presented through a usable web interface. It can:
+The prototype demonstrates that drone inspection footage can be connected to a YOLO detection workflow and presented through a practical web interface. It can:
 
 - process uploaded images and inspection videos;
-- display visual detection results with bounding boxes;
+- identify relevant objects and display visual detection results;
 - show detection information during video processing;
 - preserve selected key frames and report information.
-
-**[PLACE VERIFIED RESULT HERE]**  
-Add one result that you have actually measured or observed clearly. For example: a test-set metric, the number of processed videos, or a specific behavior observed during evaluation. Do not add an accuracy claim unless it can be supported by your evaluation records.
 
 ---
 
 ## My Contribution
 
-**[REPLACE THIS SECTION WITH THE STUDENT'S ACTUAL CONTRIBUTION]**
+As the project developer, I completed the main technical and research work, including:
 
-Use specific, truthful statements such as:
-
-- I organized and prepared the detection data.
-- I trained and tested the YOLO detection model.
-- I participated in planning or collecting drone-based inspection footage.
-- I built the image and video detection workflow.
-- I connected the model to the web interface.
-- I designed the result display and report generation process.
-- I evaluated the prototype on scenes outside the original training examples.
-
-If a part was completed as a team, describe it as a team contribution rather than claiming it as an individual task.
+- organizing and preparing the detection data;
+- training and testing the YOLO detection model;
+- developing the image and video detection workflow;
+- building the Flask-based web interface;
+- connecting model inference to the result display;
+- designing the inspection report generation process;
+- evaluating the prototype and documenting its limitations.
 
 ---
 
@@ -197,30 +146,4 @@ Next steps include:
 - **HTML, CSS, and JavaScript:** browser interface
 - **HTML report generation:** inspection record output
 
-The technical stack supports the application, but the central idea is the workflow: **drone collection → AI detection → web review → inspection evidence**.
-
----
-
-## Contact and Links
-
-**Student:** `[Student name]`  
-**School:** `[School name]`  
-**Email:** `[Optional public contact]`  
-**Project showcase:** `[Add public project page URL]`  
-**Demo video:** `[Add public video URL]`  
-**Working prototype:** `[Add public prototype URL, if available]`
-
----
-
-## Media Checklist Before Sharing
-
-- [ ] Replace the student, school, and year placeholders.
-- [ ] Add one original drone inspection photo.
-- [ ] Add one annotated detection result from the same or a comparable scene.
-- [ ] Add one screenshot of the working web interface.
-- [ ] Add one screenshot of the generated report.
-- [ ] Add the English demo video link.
-- [ ] Keep the demo video between 2 and 3 minutes.
-- [ ] Add one verified result without exaggerating performance.
-- [ ] Rewrite the contribution section according to the student's real work.
-- [ ] Check that every public link opens without login, download, or extra setup.
+The central idea is the workflow: **drone collection → AI detection → web review → inspection evidence**.
