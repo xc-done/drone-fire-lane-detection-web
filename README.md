@@ -5,6 +5,9 @@
 **Project by:** Xing'er Li  
 **Project year:** 2026
 
+> **[AUTHOR PHOTO PLACEHOLDER]**  
+> Add the project author's photo here.
+
 ---
 
 ## The Problem
@@ -44,7 +47,7 @@ Drone inspection footage
 
 ### Drone Inspection Input
 
-![Original drone inspection footage](assets/drone-inspection-input.jpg)
+**[ADD ORIGINAL DRONE INSPECTION PHOTO HERE]**
 
 *Original footage collected during a fire-lane inspection.*
 
