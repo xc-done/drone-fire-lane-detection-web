@@ -2,11 +2,18 @@
 
 > A computer vision project that uses drone inspection footage to identify potential obstructions in emergency access routes and turn them into reviewable visual evidence.
 
-**Project by:** Xing'er Li  
 **Project year:** 2026
 
-> **[AUTHOR PHOTO PLACEHOLDER]**  
-> Add the project author's photo here.
+## Author
+
+> **[AUTHOR PHOTO PLACEHOLDER]**
+
+**Name:** Xing'er Li  
+**School:** [Add school name]  
+**Grade:** [Add grade]  
+**Location:** [Add city and country]
+
+**Mentor:** [Optional]
 
 ---
 
