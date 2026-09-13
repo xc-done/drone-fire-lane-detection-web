@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safe Fly Video Detection</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Safe Fly</p>
+        <h1>无人机视频实时检测网页</h1>
+        <p class="subtitle">上传巡检图片或视频，画面会自动适应大屏区域，下方实时输出检测类别和数量。</p>
+      </div>
+      <div class="badge">Local Video Detection</div>
+    </section>
+
+    <section class="panel inputs-panel">
+      <label class="field weight-field">
+        <span>模型权重路径</span>
+        <input type="text" id="weightsPath" value="{{ default_weights }}" placeholder="例如：E:/safe-fly/weights/best.pt">
+      </label>
+      <div class="inputs-grid">
+        <form id="imageForm" class="upload-block" enctype="multipart/form-data">
+          <div class="section-head">
+            <h2>上传检测图片</h2>
+            <span class="hint">支持 JPG、PNG、BMP、WEBP</span>
+          </div>
+          <input type="hidden" name="weights_path" id="imageWeightsPath" value="{{ default_weights }}">
+          <label class="field file-field">
+            <span>选择图片</span>
+            <input type="file" name="image" accept="image/*" required>
+          </label>
+          <input type="hidden" name="conf" value="{{ default_conf }}">
+          <input type="hidden" name="imgsz" value="{{ default_imgsz }}">
+          <button type="submit" id="imageSubmit">开始图片检测</button>
+        </form>
+
+        <form id="videoForm" class="upload-block" action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
+          <div class="section-head">
+            <h2>上传检测视频</h2>
+            <span class="hint">上传后点击“开始实时检测”</span>
+          </div>
+          <input type="hidden" name="weights_path" id="videoWeightsPath" value="{{ default_weights }}">
+          <label class="field file-field">
+            <span>选择视频</span>
+            <input type="file" name="video" accept="video/*" required>
+          </label>
+          <label class="field small">
+            <span>占用判定秒数</span>
+            <input type="number" name="category_seconds" min="1" max="120" step="1" value="{{ default_category_seconds }}">
+          </label>
+          <input type="hidden" name="conf" value="{{ default_conf }}">
+          <input type="hidden" name="imgsz" value="{{ default_imgsz }}">
+          <input type="hidden" name="frame_step" value="{{ default_frame_step }}">
+          <div class="actions">
+            <button type="submit">上传视频</button>
+            {% if video_ready %}
+              <button type="button" id="startDetection">开始实时检测</button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel media-panel">
+      <div class="section-head">
+        <div>
+          <h2>检测画面</h2>
+          <p class="panel-note">图片和视频都会显示在同一个窗口里，切换后直接复用这里的画面。</p>
+        </div>
+        <span class="hint">图片和视频共用展示区</span>
+      </div>
+      <div class="media-stage">
+        <img id="mediaFrame" alt="检测画面" draggable="false">
+        <div class="empty-stage" id="mediaPlaceholder">上传图片后会显示结果，点击“开始实时检测”后会播放视频流</div>
+      </div>
+    </section>
+
+    <section class="panel log-panel">
+      <div class="section-head">
+        <h2>实时输出</h2>
+        {% if report_file %}
+          <a class="download" id="downloadLink" href="{{ url_for('download_report', filename=report_file) }}">下载报告</a>
+        {% else %}
+          <a class="download hidden" id="downloadLink" href="#">下载报告</a>
+        {% endif %}
+      </div>
+      <p class="status" id="resultsStatus"></p>
+      <div class="results-list" id="resultsList">
+        <p class="empty">暂无检测结果。</p>
+      </div>
+      <div class="log-box" id="logBox">
+        <p class="empty">检测开始后，这里会实时显示系统运行日志。</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
