@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drone-Assisted Fire Lane Occupancy Detection System — Xing'er Li</title>
+<meta name="description" content="A computer vision project that turns drone inspection footage into reviewable fire-lane occupancy evidence: YOLO detection, a Flask review interface, and generated inspection reports.">
+<style>
+  :root{
+    --bg:#0b1220;
+    --bg-soft:#111c30;
+    --card:#152238;
+    --line:#22334f;
+    --text:#e8eefb;
+    --muted:#9fb0ca;
+    --accent:#4d8dff;
+    --accent-2:#22d3a6;
+    --warn:#ffb020;
+    --radius:16px;
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:radial-gradient(1200px 600px at 50% -160px, #16294a 0%, var(--bg) 60%) no-repeat, var(--bg);
+    color:var(--text);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+  header{padding:56px 0 8px;text-align:center}
+  .eyebrow{
+    display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent-2);border:1px solid rgba(34,211,166,.35);
+    padding:5px 12px;border-radius:999px;background:rgba(34,211,166,.08);
+  }
+  h1{font-size:clamp(26px,4.2vw,44px);line-height:1.2;margin:20px auto 14px;max-width:20ch;letter-spacing:-.02em}
+  .lede{color:var(--muted);font-size:clamp(15px,1.6vw,18px);max-width:62ch;margin:0 auto}
+  .byline{color:var(--muted);font-size:14px;margin-top:18px}
+  .byline b{color:var(--text);font-weight:600}
+
+  /* video */
+  .player{margin:34px 0 0;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);
+    background:#000;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+  .player video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000}
+  .caption{color:var(--muted);font-size:13px;text-align:center;margin:12px 0 0}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:44px 0 0}
+  .stat{background:linear-gradient(180deg,var(--card),#111b2c);border:1px solid var(--line);
+    border-radius:var(--radius);padding:18px 16px;text-align:center}
+  .stat .v{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;color:#fff}
+  .stat .v small{font-size:.5em;color:var(--accent-2);font-weight:600;margin-left:2px}
+  .stat .k{color:var(--muted);font-size:12.5px;margin-top:4px;letter-spacing:.02em}
+
+  section{margin:72px 0 0}
+  h2{font-size:clamp(20px,2.4vw,26px);margin:0 0 8px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 24px;max-width:70ch}
+  p{margin:0 0 14px}
+
+  /* pipeline */
+  .flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+  .step .n{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.14em}
+  .step h3{margin:8px 0 6px;font-size:16px}
+  .step p{color:var(--muted);font-size:14px;margin:0}
+
+  /* figures */
+  .figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+  figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  figure img{display:block;width:100%;height:auto;background:#0b1220}
+  figcaption{padding:12px 16px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  .wide{grid-column:1/-1}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden;font-size:15px}
+  th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+  tr:last-child td{border-bottom:none}
+  td.num{font-variant-numeric:tabular-nums;font-weight:600}
+  .best{color:var(--accent-2)}
+
+  ul{margin:0 0 14px;padding-left:20px;color:var(--muted)}
+  li{margin-bottom:7px}
+
+  .links{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+  .btn{display:inline-block;padding:11px 18px;border-radius:12px;border:1px solid var(--line);
+    background:var(--card);color:var(--text);font-size:14px;font-weight:600}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#04122b}
+  .btn:hover{text-decoration:none;filter:brightness(1.08)}
+
+  footer{margin:80px 0 60px;padding-top:26px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:13.5px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
+  @media (max-width:560px){
+    header{padding-top:36px}
+    .figs{grid-template-columns:1fr}
+    section{margin-top:52px}
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <span class="eyebrow">Computer Vision · 2026</span>
+  <h1>Drone-Assisted Fire Lane Occupancy Detection System</h1>
+  <p class="lede">
+    Fire lanes are blocked by parked cars far more often than anyone checks. This project
+    turns drone inspection footage into reviewable evidence — YOLO detection, a human-in-the-loop
+    web interface, and an automatically generated inspection report.
+  </p>
+  <p class="byline"><b>Xing'er Li</b> · Project year 2026</p>
+
+  <div class="player">
+    <video controls preload="metadata" playsinline poster="assets/demo-poster.jpg">
+      <source src="assets/demo.mp4" type="video/mp4">
+      Your browser cannot play this video.
+      <a href="assets/demo.mp4">Download the demo (1:53)</a>.
+    </video>
+  </div>
+  <p class="caption">Project presentation · 1 min 53 s · problem, architecture, live detection, results</p>
+
+  <div class="stats">
+    <div class="stat"><div class="v best">0.958</div><div class="k">mAP@50</div></div>
+    <div class="stat"><div class="v best">0.596</div><div class="k">mAP@50-95</div></div>
+    <div class="stat"><div class="v">0.911</div><div class="k">Precision</div></div>
+    <div class="stat"><div class="v">0.899</div><div class="k">Recall</div></div>
+    <div class="stat"><div class="v">944</div><div class="k">Training images</div></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h2>The problem</h2>
+    <p class="sub">
+      A blocked fire lane costs minutes that emergency crews do not have. Traditional inspection
+      means someone walking the estate or scrubbing through hours of recorded video — slow, easy to
+      skip, and hard to turn into evidence.
+    </p>
+    <p>
+      A drone solves the capture side: one flight covers a whole compound from above, with no
+      parked cars blocking the view of the lane markings. This project solves the other half —
+      converting that footage into annotated frames, occupancy durations, and a report someone can
+      act on.
+    </p>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <p class="sub">Four steps, one workflow. A human stays in the loop at the last step.</p>
+    <div class="flow">
+      <div class="step">
+        <div class="n">STEP 01</div>
+        <h3>Capture</h3>
+        <p>Drone footage of fire lanes and no-parking zones, recorded from an elevated, unobstructed viewpoint.</p>
+      </div>
+      <div class="step">
+        <div class="n">STEP 02</div>
+        <h3>Detect</h3>
+        <p>A fine-tuned YOLO26m model labels vehicles, non-motorized vehicles, and the occupied lane area frame by frame.</p>
+      </div>
+      <div class="step">
+        <div class="n">STEP 03</div>
+        <h3>Review</h3>
+        <p>A Flask web app streams the annotated video next to live per-class counts, so an inspector can watch the result.</p>
+      </div>
+      <div class="step">
+        <div class="n">STEP 04</div>
+        <h3>Report</h3>
+        <p>Targets persisting past a configurable threshold are kept as keyframes and written into a self-contained HTML report.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The system</h2>
+    <p class="sub">
+      One page, two input modes — still images and video share the same result area, so the
+      workflow does not change when the evidence does.
+    </p>
+    <div class="figs">
+      <figure class="wide">
+        <img src="assets/web-interface.png" alt="Web interface with upload forms and the detection stream">
+        <figcaption>Review interface: weight path, image/video upload, live detection view, and per-class counters.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/detection-output.jpg" alt="Annotated detection results on drone-view frames">
+        <figcaption>Detection output across drone-view frames — boxes, class labels, and confidence.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/inspection-report.png" alt="Generated HTML inspection report with keyframes">
+        <figcaption>Generated inspection report: keyframes, timestamps, and an occupancy classification per target.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Training &amp; evaluation</h2>
+    <p class="sub">
+      YOLO26m fine-tuned for 150 epochs on 944 drone-view images from the <code>firc-dataset</code>
+      (3 classes, 4,567 boxes), split 755 / 94 / 95. Validation set: 94 images, 440 instances.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Value</th><th>Note</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>mAP@50</td><td class="num best">0.958</td><td>best epoch 0.961</td></tr>
+        <tr><td>mAP@50-95</td><td class="num best">0.596</td><td>best epoch 0.596</td></tr>
+        <tr><td>Precision</td><td class="num">0.911</td><td>best epoch 0.924</td></tr>
+        <tr><td>Recall</td><td class="num">0.899</td><td>best epoch 0.922</td></tr>
+        <tr><td>F1 (all classes)</td><td class="num">0.90</td><td>at confidence 0.378</td></tr>
+      </tbody>
+    </table>
+    <div class="figs" style="margin-top:18px">
+      <figure class="wide">
+        <img src="assets/training-curves.png" alt="Training curves: mAP and precision/recall over 150 epochs">
+        <figcaption>150 epochs — mAP@50 and mAP@50-95 (left), precision and recall (right). No early stop.</figcaption>
+      </figure>
+      <figure>
+        <img src="results/curves/BoxPR_curve.png" alt="Precision-recall curve">
+        <figcaption>Precision–recall curve.</figcaption>
+      </figure>
+      <figure>
+        <img src="results/curves/BoxF1_curve.png" alt="F1-confidence curve">
+        <figcaption>F1–confidence curve, all classes peak at 0.90.</figcaption>
+      </figure>
+      <figure class="wide">
+        <img src="results/curves/confusion_matrix_normalized.png" alt="Normalized confusion matrix">
+        <figcaption>
+          Normalized confusion matrix. Diagonal 0.92 / 0.99 / 0.92 — the classes are rarely confused
+          with each other; most residual error is background, i.e. missed detections and false positives.
+        </figcaption>
+      </figure>
+    </div>
+    <div class="links" style="margin-top:20px">
+      <a class="btn" href="results/results.csv">Per-epoch results (CSV)</a>
+      <a class="btn" href="results/metrics.md">Evaluation notes</a>
+      <a class="btn" href="train.py">train.py</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>What it does not do</h2>
+    <ul>
+      <li>The validation split comes from the same public dataset as training, so 0.958 reflects in-distribution accuracy — not generalization to new flights, altitudes, or lighting.</li>
+      <li>Occupancy duration uses frame-to-frame IoU tracking, which degrades when the drone moves rather than hovers.</li>
+      <li>It is a first-pass inspection aid. It does not replace a professional inspection or make any enforcement decision.</li>
+      <li>Face and licence-plate blurring, promised in the proposal, is not implemented yet.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Source</h2>
+    <div class="links">
+      <a class="btn primary" href="https://github.com/xc-done/drone-fire-lane-detection-web">GitHub repository</a>
+      <a class="btn" href="https://github.com/xc-done/drone-fire-lane-detection-web#readme">README</a>
+      <a class="btn" href="assets/demo.mp4">Download demo (5.9 MB)</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>Drone-Assisted Fire Lane Occupancy Detection System · 2026</span>
+    <span>YOLO26m · Flask · OpenCV · firc-dataset</span>
+  </footer>
+
+</main>
+</body>
+</html>

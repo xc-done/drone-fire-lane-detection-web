@@ -2,11 +2,11 @@
 
 > A computer vision project that uses drone inspection footage to identify potential obstructions in emergency access routes and turn them into reviewable visual evidence.
 
-[![Watch the project demo](assets/demo-preview.gif)](assets/demo.mp4)
+[![Open the project page](assets/demo-preview.gif)](https://xc-done.github.io/drone-fire-lane-detection-web/)
 
-### ▶ [Watch the full demo (1:53)](assets/demo.mp4)
+### ▶ [Open the project page](https://xc-done.github.io/drone-fire-lane-detection-web/)
 
-*Presented by Xing'er Li — problem, system architecture, live detection, and results.*
+*The page plays the full 1:53 demo inline — no download — next to the evaluation results and screenshots.*
 
 **Project year:** 2026
 
@@ -86,14 +86,15 @@ Drone inspection footage
 
 ## Project Demo Video
 
-**[▶ Watch the demo (1:53)](assets/demo.mp4)**
+**[▶ Open the project page to watch the demo (1:53)](https://xc-done.github.io/drone-fire-lane-detection-web/)** — plays inline in the browser, no download.
 
 The video shows the complete workflow:
 
 **Problem → Drone inspection → Detection → Web review → Generated report**
 
-Source file: [`assets/demo.mp4`](assets/demo.mp4) (1:53, 1280×720, 5.9 MB, compressed
-from the 1080p original). A short silent preview plays at the top of this page.
+The page is served from this repository by GitHub Pages ([`index.html`](index.html)).
+The raw file is also available as [`assets/demo.mp4`](assets/demo.mp4) (1:53, 1280×720,
+5.9 MB, compressed from the 1080p original); a short silent preview plays at the top of this page.
 
 ---
 
