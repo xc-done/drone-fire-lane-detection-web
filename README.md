@@ -93,8 +93,8 @@ The video shows the complete workflow:
 **Problem → Drone inspection → Detection → Web review → Generated report**
 
 The page is served from this repository by GitHub Pages ([`index.html`](index.html)).
-The raw file is also available as [`assets/demo.mp4`](assets/demo.mp4) (1:53, 1280×720,
-5.9 MB, compressed from the 1080p original); a short silent preview plays at the top of this page.
+The raw file is also available as [`assets/demo.mp4`](assets/demo.mp4) (1:53, 1920×1080,
+91 MB, original recording); a short silent preview plays at the top of this page.
 
 ---
 
