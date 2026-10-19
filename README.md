@@ -1,14 +1,16 @@
-# Drone-Assisted Fire Lane Occupancy Detection System
+# The Fire Lane Was Blocked. Nobody Was Looking.
 
-> A computer vision project that uses drone inspection footage to identify potential obstructions in emergency access routes and turn them into reviewable visual evidence.
+**Fire-lane occupancy detection from drone footage** · Xing'er Li · 2026
+
+> A fire truck pulls into a housing complex at 2 a.m. The gate is blocked by a car that has been sitting there for hours. Nobody writes it down, so nobody follows up.
+>
+> This project builds the record. Drone footage goes in, a fine-tuned YOLO26m detector finds the vehicles and the occupied lane areas, a web interface lets a reviewer watch the detection and sort each target by how long it stayed, and the system writes an inspection report a property manager can act on.
 
 [![Open the project page](assets/demo-preview.gif)](https://xc-done.github.io/drone-fire-lane-detection-web/)
 
 ### ▶ [Open the project page](https://xc-done.github.io/drone-fire-lane-detection-web/)
 
 *The page plays the full 1:53 demo inline — no download — next to the evaluation results and screenshots.*
-
-**Project year:** 2026
 
 ## Author
 
@@ -25,13 +27,9 @@
 
 ## The Problem
 
-Fire lanes are essential for emergency response, but they can be blocked by vehicles or other objects. Manual inspection is time-consuming, especially when inspectors need to review long videos or cover a large area. Fixed cameras may also provide limited coverage or inflexible viewpoints.
+Fire lanes are still inspected the way they were twenty years ago. Someone walks the estate, or someone scrubs through recorded video. Both are slow, both are easy to skip, and neither leaves a record you can point at later. Fixed cameras help, but coverage stays partial and the viewpoint never changes.
 
-This project explores a practical first-pass inspection workflow that combines drone footage with computer vision while keeping a human reviewer in the loop.
-
-### Why Use a Drone?
-
-A drone can capture wider areas and more flexible viewpoints than a single fixed camera. In this project, the drone is the data-collection layer: it records inspection footage that can later be analyzed by the detection model.
+A drone fixes the capture side: one flight covers a whole compound from above, and the camera looks down on the lane markings instead of at whatever is parked in front of them. What is left is the other half of the job — turning that footage into annotated frames, occupancy durations, and a report someone can act on. That is what this project builds.
 
 ---
 

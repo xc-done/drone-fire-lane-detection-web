@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Drone-Assisted Fire Lane Occupancy Detection System — Xing'er Li</title>
-<meta name="description" content="A computer vision project that turns drone inspection footage into reviewable fire-lane occupancy evidence: YOLO detection, a Flask review interface, and generated inspection reports.">
+<title>The Fire Lane Was Blocked. Nobody Was Looking. — Fire-Lane Detection from Drone Footage</title>
+<meta name="description" content="Fire-lane occupancy detection from drone footage: a fine-tuned YOLO26m detector, a review interface that sorts each target by how long it stayed, and an inspection report a property manager can act on.">
 <style>
   :root{
     --bg:#0b1220;
@@ -37,8 +37,9 @@
     color:var(--accent-2);border:1px solid rgba(34,211,166,.35);
     padding:5px 12px;border-radius:999px;background:rgba(34,211,166,.08);
   }
-  h1{font-size:clamp(26px,4.2vw,44px);line-height:1.2;margin:20px auto 14px;max-width:20ch;letter-spacing:-.02em}
+  h1{font-size:clamp(26px,4.2vw,44px);line-height:1.2;margin:20px auto 14px;max-width:24ch;letter-spacing:-.02em}
   .lede{color:var(--muted);font-size:clamp(15px,1.6vw,18px);max-width:62ch;margin:0 auto}
+  .lede + .lede{margin-top:14px}
   .byline{color:var(--muted);font-size:14px;margin-top:18px}
   .byline b{color:var(--text);font-weight:600}
 
@@ -106,11 +107,16 @@
 
 <header class="wrap">
   <span class="eyebrow">Computer Vision · 2026</span>
-  <h1>Drone-Assisted Fire Lane Occupancy Detection System</h1>
+  <h1>The Fire Lane Was Blocked. Nobody Was Looking.</h1>
   <p class="lede">
-    Fire lanes are blocked by parked cars far more often than anyone checks. This project
-    turns drone inspection footage into reviewable evidence — YOLO detection, a human-in-the-loop
-    web interface, and an automatically generated inspection report.
+    A fire truck pulls into a housing complex at 2 a.m. The gate is blocked by a car that has been
+    sitting there for hours. Nobody writes it down, so nobody follows up.
+  </p>
+  <p class="lede">
+    This project builds the record. Drone footage goes in, a fine-tuned YOLO26m detector finds the
+    vehicles and the occupied lane areas, a web interface lets a reviewer watch the detection and
+    sort each target by how long it stayed, and the system writes an inspection report a property
+    manager can act on.
   </p>
   <p class="byline"><b>Xing'er Li</b> · Project year 2026</p>
 
@@ -137,21 +143,21 @@
   <section>
     <h2>The problem</h2>
     <p class="sub">
-      A blocked fire lane costs minutes that emergency crews do not have. Traditional inspection
-      means someone walking the estate or scrubbing through hours of recorded video — slow, easy to
-      skip, and hard to turn into evidence.
+      Fire lanes are still inspected the way they were twenty years ago. Someone walks the estate,
+      or someone scrubs through recorded video. Both are slow, both are easy to skip, and neither
+      leaves a record you can point at later.
     </p>
     <p>
-      A drone solves the capture side: one flight covers a whole compound from above, with no
-      parked cars blocking the view of the lane markings. This project solves the other half —
-      converting that footage into annotated frames, occupancy durations, and a report someone can
-      act on.
+      A drone fixes the capture side. One flight covers a whole compound from above, and the
+      camera looks down on the lane markings instead of at whatever is parked in front of them.
+      What is left is the other half of the job: turning that footage into annotated frames,
+      occupancy durations, and a report someone can act on. That is what this project builds.
     </p>
   </section>
 
   <section>
     <h2>How it works</h2>
-    <p class="sub">Four steps, one workflow. A human stays in the loop at the last step.</p>
+    <p class="sub">Four steps, one workflow — and a human still signs off at the end.</p>
     <div class="flow">
       <div class="step">
         <div class="n">STEP 01</div>
@@ -254,7 +260,7 @@
   </section>
 
   <footer>
-    <span>Drone-Assisted Fire Lane Occupancy Detection System · 2026</span>
+    <span>Fire-lane occupancy detection from drone footage · 2026</span>
     <span>YOLO26m · Flask · OpenCV · firc-dataset</span>
   </footer>
 
