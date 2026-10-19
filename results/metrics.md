@@ -58,12 +58,42 @@ Rebuild them at any time:
 python scripts/export_results.py
 ```
 
+## Validation plots
+
+Output of `model.val()` on the 94-image validation split. The F1 curve reports
+`all classes 0.90 at 0.378`, consistent with precision 0.911 / recall 0.899
+(F1 = 2PR/(P+R) = 0.905), so these plots belong to the shipped `best.pt`.
+
+| Precision–Recall | F1–Confidence |
+|---|---|
+| ![PR curve](curves/BoxPR_curve.png) | ![F1 curve](curves/BoxF1_curve.png) |
+
+| Precision–Confidence | Recall–Confidence |
+|---|---|
+| ![P curve](curves/BoxP_curve.png) | ![R curve](curves/BoxR_curve.png) |
+
+| Confusion matrix | Confusion matrix (normalized) |
+|---|---|
+| ![Confusion matrix](curves/confusion_matrix.png) | ![Confusion matrix normalized](curves/confusion_matrix_normalized.png) |
+
+Per-class behaviour visible in the plots:
+
+- Normalized diagonal: `fire escape occupation` **0.99**, `car` **0.92**,
+  `non-motorized vehicle` **0.92**.
+- The residual on the diagonal goes to *background* (8% / 1% / 8%), i.e. missed
+  detections — the classes are almost never confused with each other.
+- The background column (0.34 / 0.28 / 0.38) is background regions being
+  predicted as targets, i.e. the false-positive source that keeps overall
+  precision at 0.911.
+- F1 peaks at 0.90 with a confidence threshold of 0.378.
+
 ## Caveats
 
-- Only **aggregate** box metrics were stored in the checkpoint. Per-class
-  precision/recall and the confusion matrix would need a re-run of
-  `model.val()` against the 94-image validation split, which is not in this
-  repository (see [`datasets/README.md`](../datasets/README.md)).
+- Only **aggregate** numeric metrics were stored in the checkpoint
+  (`train_metrics` / `train_results`). The per-class view above comes from the
+  saved validation plots, not from re-running `model.val()`, so class-wise
+  numbers are read off the curves and the confusion matrix rather than
+  reported to 4 decimals.
 - The validation split comes from the same public dataset as training, so
   0.958 mAP@50 reflects in-distribution performance. It is **not** a measure of
   generalization to new flights, altitudes, or lighting.
