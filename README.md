@@ -117,6 +117,25 @@ The prototype demonstrates that drone inspection footage can be connected to a Y
 - show detection information during video processing;
 - preserve selected key frames and report information.
 
+### Detection Model Performance
+
+`weights/best.pt` is a YOLO26m model fine-tuned for 150 epochs on the
+`firc-dataset` fire-escape dataset (944 images, 3 classes, 4567 boxes),
+split 755 / 94 / 95 for train / val / test.
+
+| Metric | Value |
+|---|---|
+| Precision | 0.911 |
+| Recall | 0.899 |
+| mAP@50 | **0.958** |
+| mAP@50-95 | **0.596** |
+
+![Training curves](assets/training-curves.png)
+
+- Full per-epoch history: [`results/results.csv`](results/results.csv)
+- Evaluation notes and caveats: [`results/metrics.md`](results/metrics.md)
+- Training script: [`train.py`](train.py) · dataset split script: [`scripts/prepare_fly_dataset.py`](scripts/prepare_fly_dataset.py)
+
 ---
 
 ## My Contribution
